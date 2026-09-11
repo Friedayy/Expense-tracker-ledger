@@ -70,9 +70,11 @@ export default function AuthScreen() {
             />
           </div>
 
-          {error && (
-            <p className="text-sm text-rust bg-rust-soft px-3.5 py-2.5">{error}</p>
-          )}
+          {error ? (
+            <p className="text-sm text-red-600 bg-red-100 px-4 py-3 rounded">
+             {String(error)}
+           </p>
+          ) : null}
           {notice && (
             <p className="text-sm text-teal bg-teal-soft px-3.5 py-2.5">{notice}</p>
           )}
