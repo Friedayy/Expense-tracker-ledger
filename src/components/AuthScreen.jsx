@@ -16,14 +16,16 @@ export default function AuthScreen() {
     setNotice(null)
     setSubmitting(true)
 
-    const action = mode === 'signin' ? signIn : signUp
-    const { error } = await action(email, password)
+   const action = mode === 'signin' ? signIn : signUp
 
-    if (error) {
-      setError(error.message)
+   const result = await action(email, password)
+
+    console.log('SUPABASE RESULT:', result)
+
+    if (result.error) {
+     setError(result.error.message)
     } else if (mode === 'signup') {
-      setNotice('Account created. Check your inbox to confirm your email, then sign in.')
-      setMode('signin')
+      setNotice('Account created successfully. You can now start tracking your finances.')
     }
     setSubmitting(false)
   }
