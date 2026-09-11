@@ -1,0 +1,16 @@
+
+node_modules
+
+
+.env
+.env.local
+.env.*.local
+
+
+dist
+
+
+*.log
+
+
+.DS_Store
