@@ -1,99 +1,75 @@
-# Ledger — Personal Finance Dashboard
+# 💰 Expense Tracker Ledger
 
-A full-stack personal finance dashboard: track income and expenses, watch a
-monthly budget, and see spending broken down by category and over time.
+A modern personal finance dashboard built with React that helps users track their income, expenses, budgets, and spending habits in one place.
 
-**Stack:** React (Vite) · Tailwind CSS · Chart.js (via react-chartjs-2) · Supabase (Postgres + Auth)
+The application provides an easy way to manage financial transactions, visualize spending by category, monitor cash flow, and keep track of monthly budgets.
 
----
+## ✨ Features
 
-## 1. Set up Supabase
+- 🔐 User authentication
+- 💸 Add income and expense transactions
+- 🗑️ Delete transactions
+- ✏️ Manage and update monthly budgets
+- 📊 Expense breakdown by category
+- 📈 Cash flow trend visualization
+- 🔎 Search and filter transactions
+- 🏷️ Categorize income and expenses
+- 💰 Track total balance, income, and expenses
+- 🇮🇳 Indian Rupee (₹) currency support
+- ☁️ Cloud database integration with Supabase
+- 📱 Responsive and modern user interface
 
-1. Create a project at [supabase.com](https://supabase.com).
-2. Open **SQL Editor** in your project dashboard, paste the contents of
-   [`supabase/schema.sql`](./supabase/schema.sql), and run it. This creates:
-   - `profiles` (one row per user, holds `monthly_budget`)
-   - `transactions` (each income/expense entry)
-   - Row Level Security policies so each user can only see their own data
-   - A trigger that auto-creates a `profiles` row when someone signs up
-3. Under **Authentication → Providers**, make sure **Email** is enabled.
-   (By default Supabase requires email confirmation on sign-up — you can
-   turn this off in **Authentication → Settings** for faster local testing.)
-4. Under **Project Settings → API**, copy your **Project URL** and
-   **anon public key**.
+## 🛠️ Tech Stack
 
-## 2. Configure the app
+### Frontend
 
-```bash
-cp .env.example .env
-```
+- React
+- Vite
+- JavaScript
+- Tailwind CSS
 
-Fill in the two values from step 1.4:
+### Backend & Database
 
-```
-VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-public-key
-```
+- Supabase
+- Supabase Authentication
+- Supabase Database
 
-## 3. Install and run
+### Data Visualization
 
-```bash
-npm install
-npm run dev
-```
+- Charts for expense categories
+- Cash flow trend visualization
 
-Visit the printed local URL (usually `http://localhost:5173`), sign up with
-an email/password, and start adding transactions.
+## 📂 Project Structure
 
-## 4. Build for production
-
-```bash
-npm run build
-npm run preview   # optional: preview the production build locally
-```
-
-The output lands in `dist/` — deploy it to Vercel, Netlify, Cloudflare
-Pages, or any static host. Remember to set the two `VITE_SUPABASE_*`
-environment variables in your host's dashboard as well.
-
----
-
-## How the data model works
-
-- **`profiles.monthly_budget`** — a single numeric goal per user, edited via
-  the "Set budget" button in the header.
-- **`transactions`** — each row is one income or expense entry with a
-  `category`, `type` (`income`/`expense`), and `date`. The dashboard derives
-  everything else (totals, chart data, remaining budget) from this table
-  client-side.
-- **Row Level Security** — every query is scoped to `auth.uid()`, so even
-  though the anon key is public, users can only ever read or write their own
-  rows.
-
-## Project structure
-
-```
-src/
-  lib/supabaseClient.js      Supabase client + category color mapping
-  context/AuthContext.jsx    Session state, sign in/up/out
-  hooks/useFinanceData.js    Fetch + optimistic add/delete/budget-update
-  components/
-    AuthScreen.jsx           Combined sign in / sign up screen
-    Dashboard.jsx            Page layout, composes everything below
-    SummaryStrip.jsx         Balance / income / expenses / remaining budget
-    CategoryChart.jsx        Doughnut chart, expenses by category
-    CashFlowChart.jsx        Line chart, net cash flow by month
-    TransactionForm.jsx      Add-transaction form
-    TransactionTable.jsx     Search/filter/delete transaction history
-    BudgetModal.jsx          Edit monthly budget goal
-```
-
-## Notes
-
-- New transactions and deletions update the UI optimistically (instantly),
-  then reconcile with the server response, rolling back if the request
-  fails.
-- The cash flow chart groups transactions by month; the category chart only
-  considers `expense` rows.
-- Categories are constrained at the database level via a `check` constraint,
-  matching the fixed list in `CATEGORIES` (`src/lib/supabaseClient.js`).
+```text
+expense-tracker-ledger/
+│
+├── src/
+│   ├── components/
+│   │   ├── AuthScreen.jsx
+│   │   ├── BudgetModal.jsx
+│   │   ├── CashFlowChart.jsx
+│   │   ├── CategoryChart.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── SummaryStrip.jsx
+│   │   ├── TransactionForm.jsx
+│   │   └── TransactionTable.jsx
+│   │
+│   ├── context/
+│   │   └── AuthContext.jsx
+│   │
+│   ├── hooks/
+│   │   └── useFinanceData.js
+│   │
+│   ├── lib/
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+│
+├── supabase/
+├── .env.example
+├── .gitignore
+├── package.json
+├── tailwind.config.js
+├── vite.config.js
+└── README.md
